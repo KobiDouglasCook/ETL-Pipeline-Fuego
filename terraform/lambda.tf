@@ -1,8 +1,9 @@
 // Create a zip file for the Lambda function to use as its deployment package
 data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_dir  = "../lambda/validate.py"
-  output_path = "../lambda/validate.zip"
+  type             = "zip"
+  source_file      = "../lambda/validate.py"
+  output_path      = "../lambda/validate.zip"
+  output_file_mode = "0644"
 }
 
 // Deploy validator Lambda function 
