@@ -2,8 +2,9 @@
 resource "aws_s3_object" "glue_script" {
   bucket = var.scripts_bucket
   key    = "transform.py"
-  source = "../glue/transform.py"
+  source = "${path.module}/../../glue/transform.py"
 }
+
 
 // Create Glue Catalog database that stores the metadata for the tables created by the Glue job
 resource "aws_glue_catalog_database" "etl_db" {
