@@ -23,9 +23,9 @@ module "glue" {
   source           = "../../modules/glue"
   prefix           = local.prefix
   glue_role_arn    = module.iam.glue_role_arn
-  scripts_bucket   = module.s3.scripts_bucket_name
-  raw_bucket       = module.s3.raw_bucket_name
-  processed_bucket = module.s3.processed_bucket_name
+  scripts_bucket   = module.s3.scripts_bucket
+  raw_bucket       = module.s3.raw_bucket
+  processed_bucket = module.s3.processed_bucket
 }
 
 module "lambda" {

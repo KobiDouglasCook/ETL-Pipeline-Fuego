@@ -1,15 +1,15 @@
 // Create a zip file for the Lambda function to use as its deployment package
 data "archive_file" "lambda_zip" {
   type             = "zip"
-  source_file      = "../lambda/validate.py"
-  output_path      = "../lambda/validate.zip"
+  source_file      = "../../lambda/validate.py"
+  output_path      = "../../lambda/validate.zip"
   output_file_mode = "0644"
 }
 
 // Deploy validator Lambda function 
 resource "aws_lambda_function" "validator" {
   function_name    = "${var.prefix}-validator"
-  role             = aws_iam_role.lambda_role.arn
+  role             = var.lambda_role_arn
   handler          = "validate.lambda_handler"
   runtime          = "python3.12"
   filename         = data.archive_file.lambda_zip.output_path
