@@ -37,3 +37,7 @@ module "lambda" {
   raw_bucket_id   = module.s3.raw_bucket_id
 }
 
+module "athena" {
+  source = "../../modules/athena"
+  prefix = local.prefix
+}

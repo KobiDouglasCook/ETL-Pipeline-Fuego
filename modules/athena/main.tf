@@ -1,3 +1,14 @@
 resource "aws_s3_bucket" "athena_results" {
-  bucket = "${local.prefix}-athena-${data.aws_caller_identity.current.account_id}"
+  bucket = "${var.prefix}-athena-${var.account_id}"
+}
+
+
+resource "aws_athena_workgroup" "etl" {
+  name = "${var.prefix}-workgroup"
+
+  configuration {
+    result_configuration {
+      output_location = "s3://${aws_s3_bucket.athena_results.bucket}/results/"
+    }
+  }
 }
