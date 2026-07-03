@@ -2,6 +2,8 @@ import sys
 from awsglue.utils import getResolvedOptions
 from awsglue.context import GlueContext
 from pyspark.context import SparkContext
+from awsglue.dynamicframe import DynamicFrame
+from pyspark.sql.functions import lit
 
 # --------------------------------------------------------------------
 # Read job arguments passed from Terraform
@@ -56,7 +58,19 @@ transformed = datasource.resolveChoice(
 # Remove columns that contain only NULL values
 # --------------------------------------------------------------------
 
-transformed = transformed.drop_null_fields()
+df = transformed.toDF()
+df = df.withColumn("region", lit("us-east-1"))
+df = transformed.toDF()
+
+df = df.select(
+    "order_id",
+    "customer_id",
+    "amount",
+    "timestamp",
+    "region"
+)
+df = df.dropna()
+transformed = DynamicFrame.fromDF(df, glueContext, "transformed")
 
 # --------------------------------------------------------------------
 # Load
