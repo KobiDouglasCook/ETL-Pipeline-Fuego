@@ -7,16 +7,16 @@ resource "aws_s3_object" "glue_script" {
 
 // Create Glue Catalog database that stores the metadata for the tables created by the Glue job
 resource "aws_glue_catalog_database" "etl_db" {
-  name = "${replace(local.prefix, "-", "_")}_db"
+  name = "${replace(var.prefix, "-", "_")}_db"
 }
 
 // Define the Glue job that will perform the ETL process
 resource "aws_glue_job" "etl_job" {
-  name     = "${local.prefix}-etl-job"
+  name     = "${var.prefix}-etl-job"
   role_arn = aws_iam_role.glue_role.arn
 
   command {
-    script_location = "s3://${aws_s3_bucket.scripts.bucket}/${aws_s3_object.glue_script.key}"
+    script_location = "s3://${var.scripts_bucket}/transform.py"
     python_version  = "3"
   }
 
@@ -25,8 +25,8 @@ resource "aws_glue_job" "etl_job" {
   number_of_workers = 2
 
   default_arguments = {
-    "--raw_bucket"       = aws_s3_bucket.raw.bucket
-    "--processed_bucket" = aws_s3_bucket.processed.bucket
+    "--raw_bucket"       = var.raw_bucket
+    "--processed_bucket" = var.processed_bucket
   }
 }
 

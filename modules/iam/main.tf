@@ -1,6 +1,6 @@
 // Define an execution role for Lambda function
 resource "aws_iam_role" "lambda_role" {
-  name = "${local.prefix}-lambda-role"
+  name = "${var.prefix}-lambda-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 
 // Create inline policy for Lambda role and attaches directly to the Lambda role
 resource "aws_iam_role_policy" "lambda_s3_glue" {
-  name = "${local.prefix}-lambda-policy"
+  name = "${var.prefix}-lambda-policy"
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "lambda_s3_glue" {
 
 // Create execution role for Glue Jobs
 resource "aws_iam_role" "glue_role" {
-  name = "${local.prefix}-glue-role"
+  name = "${var.prefix}-glue-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -66,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "glue_service" {
 
 // Add inline policy to the Glue Role to allow S3 actions
 resource "aws_iam_role_policy" "glue_s3" {
-  name = "${local.prefix}-glue-s3"
+  name = "${var.prefix}-glue-s3"
   role = aws_iam_role.glue_role.id
 
   policy = jsonencode({
