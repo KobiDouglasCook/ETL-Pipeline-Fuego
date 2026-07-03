@@ -38,6 +38,7 @@ module "lambda" {
 }
 
 module "athena" {
-  source = "../../modules/athena"
-  prefix = local.prefix
+  source     = "../../modules/athena"
+  prefix     = local.prefix
+  account_id = data.aws_caller_identity.current.account_id
 }
