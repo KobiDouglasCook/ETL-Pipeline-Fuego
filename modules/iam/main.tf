@@ -78,3 +78,33 @@ resource "aws_iam_role_policy" "glue_s3" {
     }]
   })
 }
+
+// IAM Role for Grafana to assume
+data "aws_iam_policy_document" "grafana_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["grafana.amazonaws.com"]
+    }
+  }
+}
+
+# Grafana IAM Role to allow Grafana to assume the role and access AWS resources
+resource "aws_iam_role" "grafana_role" {
+  name               = "${var.prefix}-grafana-role"
+  assume_role_policy = data.aws_iam_policy_document.grafana_assume_role.json
+}
+
+# Grafana read acccess to CloudWatch metrics and logs
+resource "aws_iam_role_policy_attachment" "grafana_cloudwatch" {
+  role       = aws_iam_role.grafana_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
+}
+
+# Grafana X-Ray read access to view traces
+resource "aws_iam_role_policy_attachment" "grafana_xray" {
+  role       = aws_iam_role.grafana_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSXRayReadOnlyAccess"
+}
