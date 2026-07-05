@@ -42,3 +42,10 @@ module "athena" {
   prefix     = local.prefix
   account_id = data.aws_caller_identity.current.account_id
 }
+
+module "observability" {
+  source                 = "../../modules/observability"
+  prefix                 = local.prefix
+  grafana_role_arn       = module.iam.grafana_role_arn
+  grafana_workspace_name = "${local.prefix}-grafana-workspace"
+}
