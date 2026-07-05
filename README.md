@@ -1,6 +1,6 @@
 # ETL Pipeline
 
-This repository provisions a fully automated, serverless ETL pipeline on AWS using Terraform. The pipeline ingests raw CSV files from S3, triggers a Lambda validator, processes data using AWS Glue, and stores cleaned Parquet output for downstream analytics.
+This repository provisions a fully automated, serverless ETL pipeline on AWS using Terraform. It ingests raw CSV files from S3, validates them with Lambda, transforms data through AWS Glue, and outputs optimized Parquet datasets for downstream analytics. The entire workflow is instrumented with CloudWatch and surfaced in Grafana for unified observability across all serverless components.
 
 ---
 
